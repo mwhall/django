@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Add New Device{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add a New Device</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- UserDevice Form -->
+        <fieldset class="form-group">
+            <legend>User Device Information</legend>
+            {{ user_device_form.as_p }}
+        </fieldset>
+
+        <!-- Toggle to show Device form if the user wants to add a new device -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="addNewDeviceCheck" name="new_device" value="True">
+            <label class="form-check-label" for="addNewDeviceCheck">
+                Add a new device to the database
+            </label>
+        </div>
+
+        <!-- Device Form, hidden by default and shown if "Add a new device" is checked -->
+        <div id="deviceForm" style="display: none;">
+            <fieldset class="form-group mt-3">
+                <legend>New Device Information</legend>
+                {{ device_form.as_p }}
+            </fieldset>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Add Device</button>
+    </form>
+</div>
+
+<!-- Script to toggle the visibility of the DeviceForm -->
+<script>
+    document.getElementById('addNewDeviceCheck').addEventListener('change', function() {
+        var deviceForm = document.getElementById('deviceForm');
+        if (this.checked) {
+            deviceForm.style.display = 'block';
+        } else {
+            deviceForm.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
+

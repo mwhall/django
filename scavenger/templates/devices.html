@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}My Devices{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>My Devices</h2>
+
+    <!-- Carousel for User Devices -->
+    <div id="userDevicesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Add New Device Button as the first carousel item -->
+            <div class="carousel-item active">
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'new_user_device' %}" class="btn btn-primary">+ Add New Device</a>
+                </div>
+            </div>
+
+            <!-- Loop through user devices and add them to the carousel -->
+            {% for user_device in user_devices %}
+            <div class="carousel-item">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user_device.device.name }} ({{ user_device.device.model }})</h5>
+                        <p class="card-text">{{ user_device.device.description }}</p>
+                        <a href="#" class="btn btn-primary">Manage</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#userDevicesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#userDevicesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Filterable List of All Devices -->
+    <hr>
+    <h2>All Devices</h2>
+    <input class="form-control mb-3" id="deviceSearchInput" type="text" placeholder="Search devices...">
+    <ul class="list-group" id="deviceList">
+        {% for device in all_devices %}
+        <li class="list-group-item">
+            <strong>{{ device.name }} ({{ device.model }})</strong> - {{ device.manufacturer }}
+            <a href="#" class="btn btn-sm btn-secondary float-end">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Simple JS for search filtering -->
+<script>
+document.getElementById("deviceSearchInput").addEventListener("keyup", function() {
+    let filter = this.value.toUpperCase();
+    let listItems = document.getElementById("deviceList").getElementsByTagName("li");
+
+    for (let i = 0; i < listItems.length; i++) {
+        let text = listItems[i].textContent || listItems[i].innerText;
+        listItems[i].style.display = text.toUpperCase().includes(filter) ? "" : "none";
+    }
+});
+</script>
+{% endblock %}

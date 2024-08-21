@@ -1,0 +1,43 @@
+{% load static %}
+<div class="d-flex flex-column bg-dark" style="height: calc(100vh - 80px);">
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="/" class="nav-link link-light" style="font-size: 20px">
+                <i class="bi bi-house-door"></i> Home
+            </a>
+        </li>
+        <li>
+		<a href="{% url 'devices' %}" class="nav-link link-light" style="font-size: 20px">
+                <i class="bi bi-phone"></i> Devices
+            </a>
+        </li>
+        <li>
+		<a href="% url 'components' %}" class="nav-link link-light" style="font-size: 20px">
+                <i class="bi bi-cpu"></i> Components
+            </a>
+        </li>
+        <li>
+		<a href="% url 'teardowns' %}" class="nav-link link-light" style="font-size: 20px">
+                <i class="bi bi-tools"></i> Teardowns
+            </a>
+        </li>
+        <li>
+	    <a href="% url 'hacks' %}" class="nav-link link-light" style="font-size: 20px">
+                <i class="bi bi-lightning"></i> Hacks
+            </a>
+        </li>
+    </ul>
+    <div class="bottom-0">
+    <hr style="color:white">
+    <center>{% if user.userprofile.profile_picture %}<img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}" width="64" height="64" class="rounded-circle me-2">{% else %}<i class="bi bi-person-square link-light" style="font-size: 32px"></i>{% endif %}</center>
+    <hr style="color:white">
+            <strong>{{ user.username }}</strong>
+	    <ul class="nav nav-pills flex-column mb-auto">
+	<li class="nav-item">
+		<a href="{% url 'profile' %}" class="nav-link link-light"><i class="bi bi-person-circle"></i> Profile</a>
+	</li>
+	<li class="nav-item"><a class="nav-link link-light" href="{% url 'logout' %}">Sign Out <i class="bi bi-box-arrow-right"></i></a></li>
+        </ul>
+    </div>
+</div>
+

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile Update{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white text-center">
+                    <h4 class="mb-0">Update Your User Profile</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Form for Updating User Information -->
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'update_user_info' %}">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            {{ user_form.as_p }}
+                            {{ form.as_p }}
+                        </fieldset>
+                        <button type="submit" class="btn btn-dark">Update User Information</button>
+                    </form>
+                    
+                    <hr/>
+
+                    <!-- Form for Updating Profile Picture -->
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile_picture' %}">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <legend>Profile Picture</legend>
+
+                            <!-- Current Profile Picture Preview -->
+                            <div class="me-3">
+                                {% if user.userprofile.profile_picture %}
+                                    <img src="{{ user.userprofile.profile_picture.url }}" class="img-thumbnail" width="150" height="150" alt="Profile Picture">
+                                {% else %}
+                                    <img src="{% static 'default_profile.png' %}" class="img-thumbnail" width="150" height="150" alt="Default Profile Picture">
+                                {% endif %}
+                            </div>
+
+                            <!-- ImageField Input -->
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    <input type="file" name="profile_picture" class="form-control" id="profilePictureInput" aria-describedby="uploadButton">
+                                    <button class="btn btn-dark" type="submit" id="uploadButton">Upload</button>
+                                </div>
+                                <small class="form-text text-muted">Choose a new profile picture and click 'Upload'.</small>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                    <hr>
+
+                    <!-- Password Change Link -->
+                    <h3>Change Password</h3>
+                    <br/>
+                    <a href="{% url 'password_change' %}" class="btn btn-warning">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("profilePictureInput").onchange = function (event) {
+        let reader = new FileReader();
+        reader.onload = function(){
+            let output = document.querySelector('.img-thumbnail');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
+{% endblock %}
+
